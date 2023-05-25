@@ -4,16 +4,15 @@ const authorController= require('../controller/authorcontroller')
 const blogController= require('../controller/blogController')
 
 
-router.post('/blogs',blogController.createBlog)
-//=============================Author's Api
-//create Author document api;s
+//create Author document api
 router.post('/createAuthor',authorController.author);
 //login Author
 router.get('/login',authorController.login);
+//
+router.post('/blogs',blogController.createBlog)
+
+router.get('/blogs',blogController.getBlogs)
+
 
 module.exports = router;
-
-
-
-
 
