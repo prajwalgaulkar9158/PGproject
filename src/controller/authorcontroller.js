@@ -1,6 +1,3 @@
-const authorModel = require('../model/authorModel');
-
-
 const authorModel = require("../model/authorModel");
 const {
   isValid,
