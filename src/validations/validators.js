@@ -22,6 +22,9 @@ const regixValidator = function (value) {
   const regex = /^[a-zA-Z]+([\s][a-zA-Z]+)*$/;
   return regex.test(value);
 };
+const isValidObjectId = (objectId) => {
+  return mongoose.Types.ObjectId.isValid(objectId);
+};
 
 module.exports = {
   isValid,
@@ -29,4 +32,5 @@ module.exports = {
   isValidEmail,
   isValidPassword,
   regixValidator,
+  isValidObjectId
 };

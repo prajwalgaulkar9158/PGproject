@@ -8,6 +8,8 @@ router.post('/blogs',blogController.createBlog)
 //=============================Author's Api
 //create Author document api;s
 router.post('/createAuthor',authorController.author);
+//login Author
+router.get('/login',authorController.login);
 
 module.exports = router;
 

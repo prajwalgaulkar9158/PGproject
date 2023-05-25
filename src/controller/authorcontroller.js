@@ -1,4 +1,5 @@
 const authorModel = require("../model/authorModel");
+const jwt = require('jsonwebtoken')
 const {
   isValid,
   isValidEmail,
@@ -82,4 +83,39 @@ const createAuthor = async (req, res) => {
   }
 };
 
+const loginAuthor = async (req,res) => {
+try{
+    let email = req.body.email;
+    let password = req.body.password;
+    if(!email){
+        return res.status(400).send({status:false,msg:"Enter your Email"})
+    };
+    if(!password){
+        return res.status(400).send({ status: false, msg: "Enter your password" });
+    };
+    if(!isValidEmail(email)){
+        return res.status(400).send({ status: false, message: "Email format or pattern is invalid" });
+    };
+    if(!isValidPassword(password)){
+        return res.status(400).send({status:false, message: "Password should be min 6 and max 20 character.It contains atleast--> 1 Uppercase letter, 1 Lowercase letter, 1 Number, 1 Special character" })
+    };
+
+    const checkAuthor = await authorModel.findOne({email:email,password:password})
+
+    if(!checkAuthor){
+        return res.status(400).send({status:false,msg:"Email or password is not correct"})
+    };
+
+    let token  = jwt.sign({
+        authorId: checkAuthor._id.toString(),
+        batch: "technetium",
+        group: 3
+    },"Project-1");
+    res.status(201).send({ status: true, data: token });
+}catch(error){
+    res.status(500).send({status:false,error:error.message})
+}
+}
+
 module.exports.author = createAuthor;
+module.exports.login = loginAuthor;
