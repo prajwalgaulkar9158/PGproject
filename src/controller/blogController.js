@@ -11,14 +11,14 @@ const createBlog = async function (req, res) {
 
   try {
     if (!validAuthor) {
-      return res.status(400).send({ status: false, msg: "" });
+      return res.status(400).send({ status: false, msg: "not valid" });
     } else {
       let postBlog = await blogModel.create(blogDocument);
 
       return res.status(201).send({ status: true, data: postBlog });
     }
   } catch (err) {
-    res.status(500).send({ status: false, error: err });
+     return res.status(500).send({ status: false, error: err })
   }
 };
 
