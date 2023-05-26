@@ -1,5 +1,6 @@
 const authorModel = require('../model/authorModel')
 const blogModel = require('../model/blogModel')
+const jwt=require('jsonwebtoken')
 //====================author creation===============//
 const author = async function (req, res) {
   const authorData = req.body
@@ -22,8 +23,34 @@ const author = async function (req, res) {
 }
 module.exports.author = author
 
-//======================  get author =============================//
+
+//+++++++++++++++++++++++++++++++  login author  +++++++++++++++++++++++++++++++++++++//
+
+const loginAuthor= async function (req,res){
+  const authorEmail= req.body.email
+  const authorPassword = req.body.password
+  try {
+    const validAuthor= await authorModel.findOne({$and:[{email:authorEmail},{password:authorPassword}]})
+    if(!validAuthor){
+       res.status(401).status({status:false,msg:"author not found"})
+    }else{
+      const token= jwt.sign(
+       {
+         userEmail:authorEmail,
+         userId:validAuthor._id.toString()
+      },"signature of group-5"
+      )
+      res.status(201).send({status:true,data:token})
+
+    }
+    
+  } catch (err) {
+    res.status(500).send({status:false,error:err})
+
+  }
+
+}
+module.exports.loginAuthor=loginAuthor
 
 
-//=============================================================//
 
