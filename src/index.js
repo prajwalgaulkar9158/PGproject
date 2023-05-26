@@ -6,11 +6,13 @@ const app = express();
 app.use(express.json());
 
 mongoose.connect(
-  "mongodb+srv://prajwalgaulkar78717:bXvJ3nSxWJSUIcpZ@cluster0.vdcbqqv.mongodb.net/Mini-Bloging-site",
+  "mongodb+srv://prajwalgaulkar78717:bXvJ3nSxWJSUIcpZ@cluster0.vdcbqqv.mongodb.net/Bloging-web",
   {
     useNewUrlParser: true,
   }
-);
+)
+.then(()=>console.log("mongoDB is connected"))
+.catch(err=>console.log(err))
 
 app.use('/',route);
 let port = process.env.PORT || 3000;
