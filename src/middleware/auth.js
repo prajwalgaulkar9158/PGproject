@@ -35,15 +35,17 @@ const authorisation = async function (req, res, next) {
 
   const blog = await blogModel.findById(blog_id);
 
+
+  
   try {
-    if (!blog) {
+    if (!blog) 
       res.status(404).send({ status: false, msg: "invalid path" });
-    } else {
+     else {
       if (blog.authorId == author_id) {
         next();
-      } else {
+      } else 
         res.status(403).send({ status: false, msg: "not authorised" });
-      }
+      
     }
   } catch (err) {
     res.status(500).send({ status: false, msg: err });

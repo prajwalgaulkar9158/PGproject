@@ -4,6 +4,8 @@ const authorController= require('../controller/authorcontroller')
 const blogController= require('../controller/blogController')
 const midAuth=require('../middleware/auth')
 
+
+
 router.post('/authors',authorController.author)// create author
 router.post('/blogs',midAuth.authantication, blogController.createBlog)// create blog
 

@@ -1,48 +1,49 @@
 const authorModel = require("../model/authorModel");
-const blogModel = require("../model/blogModel");
 const jwt = require("jsonwebtoken");
+const emailValidator = require('email-validator');
+const passwordValidator = require('password-validator');
+
 //====================author creation===============//
+
 const author = async function (req, res) {
-  const authorData = req.body;
-  const authorEmail = req.body.email;
-  const validEmail = /^[a-z0-9_]{3,}@[a-z]{3,}.[a-z]{3,6}$/.test(authorEmail);
+  const { fname, email, password } = req.body;
 
   try {
-    if (validEmail == true) {
-      const createAuthor = await authorModel.create(authorData);
-      res.status(201).send({ status: true, data: createAuthor });
-    } else {
-      res.status(400).send({ status: false, msg: "invalid email" });
+    if (!emailValidator.validate(email)) {
+      return res.status(400).send({ status: false, msg: "Invalid email" });
     }
+
+    const schema = new passwordValidator();
+    schema.is().min(8);
+    if (!schema.validate(password)) {
+      return res.status(400).send({ status: false, msg: "Minimum length of password should be 8 characters" });
+    }
+
+    const authorData = { fname, email, password };
+    const createAuthor = await authorModel.create(authorData);
+    res.status(201).send({ status: true, data: createAuthor });
   } catch (err) {
     console.log(err);
-    if (err.message.includes("validation")) {
-      return res.status(400).send({ status: false, msg: err.message });
-    } else if (err.message.includes("duplicate")) {
-      return res.status(400).send({ status: false, msg: err.message });
-    } else {
-      res.status(400).send({ status: false, msg: err });
-    }
+    return res.status(400).send({ status: false, msg: err.message });
   }
 };
+
 module.exports.author = author;
 
 //+++++++++++++++++++++++++++++++  login author  +++++++++++++++++++++++++++++++++++++//
 
 const loginAuthor = async function (req, res) {
-  const authorEmail = req.body.email;
-  const authorPassword = req.body.password;
+  const { email, password } = req.body;
+
   try {
-    const validAuthor = await authorModel.findOne({
-      $and: [{ email: authorEmail }, { password: authorPassword }],
-    });
+    const validAuthor = await authorModel.findOne({ email, password });
     console.log(validAuthor);
     if (!validAuthor) {
-      res.status(401).send({ status: false, msg: "author not found" });
+      res.status(401).send({ status: false, msg: "Author not found" });
     } else {
       const token = jwt.sign(
         {
-          userEmail: authorEmail,
+          userEmail: email,
           userId: validAuthor._id.toString(),
         },
         "signature of group-5"
@@ -50,7 +51,9 @@ const loginAuthor = async function (req, res) {
       res.status(201).send({ status: true, data: token });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send({ status: false, error: err });
   }
 };
+
 module.exports.loginAuthor = loginAuthor;
