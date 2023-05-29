@@ -1,7 +1,7 @@
 const express = require("express");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Validate the email format
 function validateEmail(email) {
@@ -23,6 +23,7 @@ const isValidId = function (data) {
   return mongoose.Types.ObjectId.isValid(data);
 };
 
+//================================LOGIN VALIDATION ================================================
 function validateLogin(req, res, next) {
   const isValidEmail = validateEmail(email);
   const isValidPassword = validatePassword(password);
@@ -38,7 +39,7 @@ function validateLogin(req, res, next) {
   next();
 }
 
-// Middleware to validate author properties
+//======================================AUTHOR ================================================
 const validateAuthor = (req, res, next) => {
   const { fname, lname, title, email, password } = req.body;
   const errors = [];
@@ -86,7 +87,7 @@ const validateAuthor = (req, res, next) => {
   next();
 };
 
-// Middleware to validate blog properties
+//================================================BLOG===============================================
 const validateBlog = async (req, res, next) => {
   const { title, body, authorId, tags, category, subcategory } = req.body;
   const errors = [];
@@ -110,7 +111,12 @@ const validateBlog = async (req, res, next) => {
   if (!category) {
     errors.push("Category is mandatory");
   }
-
+  if (!tags) {
+    errors.push("tags is required");
+  }
+  if (!subcategory) {
+    errors.push("subcategory is not present");
+  }
   // Return errors if any
   if (errors.length > 0) {
     return res.status(400).json({ status: false, errors });
@@ -120,4 +126,4 @@ const validateBlog = async (req, res, next) => {
   next();
 };
 
-module.exports = { validateBlog, validateAuthor,validateLogin };
+module.exports = { validateBlog, validateAuthor, validateLogin };
