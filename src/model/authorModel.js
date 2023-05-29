@@ -4,19 +4,19 @@ const authorSchema = new mongoose.Schema(
   {
     fname: {
       type: String,
-      required:[true,"please type firstName"],
+      required:true,
       trim: true
 
     },
     lname: {
       type: String,
-     required:[true,"please type lastName"],
+     required:true,
       trim: true,
     },
     title: {
       type: String,
       required: true,
-      enum: {values:["Mr", "Mrs", "Miss"], massage:"not valid prifix"}
+      enum: {values:["Mr", "Mrs", "Miss"]}
     },
     email: {
       type: String,

@@ -3,7 +3,6 @@ const authorModel = require("../model/authorModel");
 const blogModel = require("../model/blogModel");
 
 //====================================CREATE BLOG==============================================
-
 // Create a new blog
 const createBlog = async function (req, res) {
   const { authorId, ...blogDocument } = req.body;
@@ -32,6 +31,15 @@ const getBlogs = async function (req, res) {
   const qparam = req.query;
 
   try {
+
+    if (qparam.length == 0) {
+      const blog = await blogModel.find(
+        { isDeleted: false },
+        { isPublished: true }
+      );
+      return res.status(200).send({ status: true, data: blog });
+    }
+
     // Find blogs that match the query parameters and are not deleted or unpublished
     const getdata = await blogModel.find({
       $and: [qparam, { isDeleted: false }, { isPublished: true }],

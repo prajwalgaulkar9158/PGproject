@@ -3,13 +3,14 @@ const router = express.Router();
 const authorController = require('../controller/authorcontroller');
 const blogController = require('../controller/blogController');
 const midAuth = require('../middleware/auth');
+const valid = require('../middleware/validate')
 
 //====================================PHASE 1====================================================
 // Create author
-router.post('/authors', authorController.author);
+router.post('/authors',valid.validateAuthor, authorController.author);
 
 // Create blog
-router.post('/blogs', midAuth.authentication, blogController.createBlog);
+router.post('/blogs',valid.validateBlog, midAuth.authentication, blogController.createBlog);
 
 // Get blogs
 router.get('/blogs', midAuth.authentication, blogController.getBlogs);
@@ -26,6 +27,6 @@ router.delete('/blogs', midAuth.authentication, midAuth.authorisation, blogContr
 
 //===========================================PHASE 2 ================================================
 // Author login
-router.post('/login', authorController.loginAuthor);
+router.post('/login', valid.validateLogin,authorController.loginAuthor);
 
 module.exports = router;

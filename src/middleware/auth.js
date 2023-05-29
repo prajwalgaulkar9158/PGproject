@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const authorModel = require("../model/authorModel");
 const blogModel = require("../model/blogModel");
-
+ 
 
 
 //==============================AUTHENTICATION============================================
@@ -26,7 +26,7 @@ const authentication = async function (req, res, next) {
     res.status(500).send({ status: false, msg: err });
   }
 };
-module.exports.authentication = authentication;
+ 
 
 //===========================================AUTHORISATION=======================================
 
@@ -50,4 +50,4 @@ const authorisation = async function (req, res, next) {
     res.status(500).send({ status: false, msg: err });
   }
 };
-module.exports.authorisation = authorisation;
+module.exports = {authorisation,authentication}
