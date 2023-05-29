@@ -2,15 +2,20 @@ const mongoose = require("mongoose");
 const authorModel = require("../model/authorModel");
 const blogModel = require("../model/blogModel");
 
+//====================================CREATE BLOG==============================================
+
+// Create a new blog
 const createBlog = async function (req, res) {
   const { authorId, ...blogDocument } = req.body;
 
   try {
+    // Check if the author exists
     const validAuthor = await authorModel.findById(authorId);
     if (!validAuthor) {
       return res.status(400).send({ status: false, msg: "Author not valid" });
     }
 
+    // Create the blog
     const postBlog = await blogModel.create(blogDocument);
     return res.status(201).send({ status: true, data: postBlog });
   } catch (err) {
@@ -20,12 +25,14 @@ const createBlog = async function (req, res) {
 
 module.exports.createBlog = createBlog;
 
-// ====================================================================================
+// =========================================GET BLOGS ===========================================
 
+// Retrieve blogs based on query parameters
 const getBlogs = async function (req, res) {
   const qparam = req.query;
 
   try {
+    // Find blogs that match the query parameters and are not deleted or unpublished
     const getdata = await blogModel.find({
       $and: [qparam, { isDeleted: false }, { isPublished: true }],
     });
@@ -40,13 +47,20 @@ const getBlogs = async function (req, res) {
 
 module.exports.getBlogs = getBlogs;
 
-//=====================================================================//
+//========================================UPDATE BLOGS============================================//
 
+// Update a blog by its ID
 const updateBlog = async function (req, res) {
   const blogId = req.params.blogId;
-  const { body: newBody, tags: newTags, title: newTitle, subcategory: newSubcategory } = req.body;
+  const {
+    body: newBody,
+    tags: newTags,
+    title: newTitle,
+    subcategory: newSubcategory,
+  } = req.body;
 
   try {
+    // Find the blog by ID and update its properties
     const updatedata = await blogModel.findOneAndUpdate(
       { _id: blogId },
       {
@@ -71,12 +85,14 @@ const updateBlog = async function (req, res) {
 
 module.exports.updateBlog = updateBlog;
 
-//================================//
+//===================================DELETE BLOGS===============================================
 
+// Delete a blog by its ID
 const deleteBlog = async function (req, res) {
   const blogId = req.params.blogId;
-  
+
   try {
+    // Find the blog by ID and set the isDeleted and deletedAt properties
     const blog = await blogModel.findOneAndUpdate(
       { _id: blogId },
       { $set: { isDeleted: true, deletedAt: new Date() } }
@@ -94,17 +110,27 @@ const deleteBlog = async function (req, res) {
 
 module.exports.deleteBlog = deleteBlog;
 
-//==========================================================//
+//======================================DELETE BY QUERY============================================
 
+// Delete blogs based on query parameters
 const deleteByQuery = async (req, res) => {
   try {
     const data = req.query;
-    const op = await blogModel.updateMany(data, { $set: { isDeleted: true, deletedAt: new Date() } });
+    if (Object.keys(data).length === 0) {
+      return res.status(200).send({ msg: "No query found to delete the blog" });
+    }
+
+    // Update multiple blogs that match the query and set the isDeleted and deletedAt properties
+    const op = await blogModel.updateMany(data, {
+      $set: { isDeleted: true, deletedAt: new Date() },
+    });
 
     if (op.modifiedCount > 0) {
-      return res.status(200).send({ msg: "Documents deleted" });
+      return res.status(200).send({ msg: "Blogs deleted" });
     } else {
-      return res.status(404).send({ msg: "No documents matching the query were found" });
+      return res
+        .status(404)
+        .send({ msg: "No blogs matching the query were found" });
     }
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
@@ -113,4 +139,4 @@ const deleteByQuery = async (req, res) => {
 
 module.exports.deleteByQuery = deleteByQuery;
 
-//=================================================================//
+//=================================================================================================

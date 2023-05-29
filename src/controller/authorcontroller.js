@@ -1,21 +1,32 @@
 const authorModel = require("../model/authorModel");
 const jwt = require("jsonwebtoken");
 const emailValidator = require('email-validator');
-const passwordValidator = require('password-validator');
+const passwordValidator = require("password-validator");
 
-//====================author creation===============//
+// Validate the email format
+function validateEmail(email) {
+  return emailValidator.validate(email);
+}
 
+// Validate the password length
+function validatePassword(password) {
+  const schema = new passwordValidator();
+  schema.is().min(8);
+  return schema.validate(password);
+}
+
+// Create a new author
 const author = async function (req, res) {
   const { fname, email, password } = req.body;
 
   try {
-    if (!emailValidator.validate(email)) {
+    // Validate email
+    if (!validateEmail(email)) {
       return res.status(400).send({ status: false, msg: "Invalid email" });
     }
 
-    const schema = new passwordValidator();
-    schema.is().min(8);
-    if (!schema.validate(password)) {
+    // Validate password
+    if (!validatePassword(password)) {
       return res.status(400).send({ status: false, msg: "Minimum length of password should be 8 characters" });
     }
 
@@ -30,14 +41,23 @@ const author = async function (req, res) {
 
 module.exports.author = author;
 
-//+++++++++++++++++++++++++++++++  login author  +++++++++++++++++++++++++++++++++++++//
-
+// Author login
 const loginAuthor = async function (req, res) {
   const { email, password } = req.body;
 
   try {
+    // Validate email
+    if (!validateEmail(email)) {
+      return res.status(400).send({ status: false, msg: "Invalid email" });
+    }
+
+    // Validate password
+    if (!validatePassword(password)) {
+      return res.status(400).send({ status: false, msg: "Minimum length of password should be 8 characters" });
+    }
+
     const validAuthor = await authorModel.findOne({ email, password });
-    console.log(validAuthor);
+
     if (!validAuthor) {
       res.status(401).send({ status: false, msg: "Author not found" });
     } else {

@@ -2,7 +2,11 @@ const jwt = require("jsonwebtoken");
 const authorModel = require("../model/authorModel");
 const blogModel = require("../model/blogModel");
 
-const authantication = async function (req, res, next) {
+
+
+//==============================AUTHENTICATION============================================
+
+const authentication = async function (req, res, next) {
   const authorHeader = req.headers["x-api-key"];
   try {
     if (!authorHeader) {
@@ -22,30 +26,25 @@ const authantication = async function (req, res, next) {
     res.status(500).send({ status: false, msg: err });
   }
 };
-module.exports.authantication = authantication;
+module.exports.authentication = authentication;
 
-///////////////////////// authorisation  ///////////////////////////////
+//===========================================AUTHORISATION=======================================
 
 const authorisation = async function (req, res, next) {
-  const headerToken = req.headers["x-api-key"];
-  const blog_id = req.params.blogId;
-
-  const decoededToken = await jwt.verify(headerToken, "signature of group-5");
-  const author_id = decoededToken.userId;
-
-  const blog = await blogModel.findById(blog_id);
-
-
-  
   try {
-    if (!blog) 
-      res.status(404).send({ status: false, msg: "invalid path" });
-     else {
+    const headerToken = req.headers["x-api-key"];
+    const blog_id = req.params.blogId;
+
+    const decodedToken = await jwt.verify(headerToken, "signature of group-5");
+    const author_id = decodedToken.userId;
+
+    const blog = await blogModel.findById(blog_id);
+
+    if (!blog) res.status(404).send({ status: false, msg: "invalid path" });
+    else {
       if (blog.authorId == author_id) {
         next();
-      } else 
-        res.status(403).send({ status: false, msg: "not authorised" });
-      
+      } else res.status(403).send({ status: false, msg: "not authorised" });
     }
   } catch (err) {
     res.status(500).send({ status: false, msg: err });
