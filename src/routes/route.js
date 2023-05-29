@@ -16,10 +16,10 @@ router.post('/blogs',valid.validateBlog, midAuth.authentication, blogController.
 router.get('/blogs', midAuth.authentication, blogController.getBlogs);
 
 // Update blog
-router.put('/blogs/:blogId', midAuth.authentication, midAuth.authorisation, blogController.updateBlog);
+router.put('/blogs/:id', midAuth.authentication, midAuth.authorisation, blogController.updateBlog);
 
 // Delete blog
-router.delete('/blogs/:blogId', midAuth.authentication, midAuth.authorisation, blogController.deleteBlog);
+router.delete('/blogs/:id', midAuth.authentication, midAuth.authorisation, blogController.deleteBlog);
 
 // Delete blogs by query
 router.delete('/blogs', midAuth.authentication, midAuth.authorisation, blogController.deleteByQuery);

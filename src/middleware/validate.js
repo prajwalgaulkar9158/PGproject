@@ -2,8 +2,9 @@ const express = require("express");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
 const mongoose = require("mongoose");
-const authorModel = require('../model/authorModel')
-const blogModel = require('../model/blogModel')
+const authorModel = require("../model/authorModel");
+const blogModel = require("../model/blogModel");
+
 // Validate the email format
 function validateEmail(email) {
   return emailValidator.validate(email);
@@ -24,8 +25,15 @@ const isValidId = function (data) {
   return mongoose.Types.ObjectId.isValid(data);
 };
 
+const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+
+const isValidName = (name) => {
+  return nameRegex.test(name);
+};
+
 //================================LOGIN VALIDATION ================================================
 function validateLogin(req, res, next) {
+  const { email, password } = req.body;
   const isValidEmail = validateEmail(email);
   const isValidPassword = validatePassword(password);
 
@@ -34,51 +42,63 @@ function validateLogin(req, res, next) {
   }
 
   if (!isValidPassword) {
-    return res.status(400).json({ status: false, msg: "Invalid password" });
+    return res
+      .status(400)
+      .json({ status: false, msg: "Invalid password" });
   }
 
   next();
 }
 
 //======================================AUTHOR ================================================
-const validateAuthor =  async (req, res, next) => {
+const validateAuthor = async (req, res, next) => {
   const { fname, lname, title, email, password } = req.body;
   const errors = [];
 
   if (!isValidBody(req.body)) {
-    return res.status(400).json({ status: false, msg: "Body can't be empty" });
+    return res
+      .status(400)
+      .json({ status: false, msg: "Body can't be empty" });
   }
 
   // Check if required fields are present
   if (!fname) {
     errors.push("First name is mandatory");
+  } else if (!isValidName(fname)) {
+    errors.push("Name doesn't contain valid characters");
   }
+
   if (!lname) {
     errors.push("Last name is mandatory");
+  } else if (!isValidName(lname)) {
+    errors.push("Name doesn't contain valid characters");
   }
+
   if (!title) {
     errors.push("Title is mandatory");
   }
-  if (!email) {
-    errors.push("Email is mandatory");
-  }
-  if (!password) {
-    errors.push("Password is mandatory");
-  }
 
-  // Check if title is a valid enum value
   const validTitles = ["Mr", "Mrs", "Miss"];
   if (title && !validTitles.includes(title)) {
     errors.push("Title must be one of: Mr, Mrs, Miss");
   }
 
-  if (!validateEmail(email)) {
+  if (!email) {
+    errors.push("Email is mandatory");
+  } else if (!validateEmail(email)) {
     errors.push("Invalid email");
   }
-  const email1 = await authorModel.findOne({email:email})
 
- if(!email1) return res.status(500).send({status:false,msg:"email already exist in database"})
+  const existingAuthor = await authorModel.findOne({ email });
+  if (existingAuthor) {
+    return res
+      .status(500)
+      .send({ status: false, msg: "Email already exists in the database" });
+  }
 
+  if (!password) {
+    errors.push("Password is mandatory");
+  }
   if (!validatePassword(password)) {
     errors.push("Minimum length of password should be 8 characters");
   }
@@ -97,7 +117,9 @@ const validateBlog = async (req, res, next) => {
   const errors = [];
 
   if (!isValidBody(req.body)) {
-    return res.status(400).json({ status: false, msg: "Body can't be empty" });
+    return res
+      .status(400)
+      .json({ status: false, msg: "Body can't be empty" });
   }
 
   // Check if required fields are present
@@ -116,11 +138,12 @@ const validateBlog = async (req, res, next) => {
     errors.push("Category is mandatory");
   }
   if (!tags) {
-    errors.push("tags is required");
+    errors.push("Tags are required");
   }
   if (!subcategory) {
-    errors.push("subcategory is not present");
+    errors.push("Subcategory is not present");
   }
+
   // Return errors if any
   if (errors.length > 0) {
     return res.status(400).json({ status: false, errors });
