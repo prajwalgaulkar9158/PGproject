@@ -1,16 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const authorController = require('../controller/authorcontroller');
-const blogController = require('../controller/blogController');
-const midAuth = require('../middleware/auth');
-const valid = require('../middleware/validate')
+const authorController = require("../controller/authorcontroller");
+const blogController = require("../controller/blogController");
+const midAuth = require("../middleware/auth");
+const valid = require("../middleware/validate");
 
 //====================================PHASE 1====================================================
 // Create author
-router.post('/authors',valid.validateAuthor, authorController.author);
+router.post('/authors',valid.validateAuthor, authorController.author);// Ishaan
 
 // Create blog
-router.post('/blogs',valid.validateBlog, midAuth.authentication, blogController.createBlog);
+ 
+router.post('/blogs',valid.validateBlog, midAuth.authentication, blogController.createBlog);//prajwal
 
 // Get blogs
 router.get('/blogs', midAuth.authentication, blogController.getBlogs);
@@ -22,7 +23,7 @@ router.put('/blogs/:id', midAuth.authentication, midAuth.authorisation, blogCont
 router.delete('/blogs/:id', midAuth.authentication, midAuth.authorisation, blogController.deleteBlog);
 
 // Delete blogs by query
-router.delete('/blogs', midAuth.authentication, midAuth.authorisation, blogController.deleteByQuery);
+router.delete('/blogs', midAuth.authentication, midAuth.authQuery, blogController.deleteByQuery);
 
 
 //===========================================PHASE 2 ================================================

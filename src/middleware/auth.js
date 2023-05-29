@@ -59,4 +59,31 @@ const authorisation = async function (req, res, next) {
   }
 };
 
-module.exports = { authorisation, authentication };
+const authQuery = async function (req, res, next) {
+  try {
+    const data = req.query;
+    if (Object.keys(data).length === 0) {
+      return res.status(400).send({ msg: "No query found to delete the blog" });
+    }
+    const blogIdOfSearchedDoc = await blogModel
+      .find(data)
+      .select({ authorId: 1, _id: 0 });
+    if (blogIdOfSearchedDoc.length == 0)
+      return res
+        .status(404)
+        .send({ status: false, msg: "no Doc found For this query" });
+    const filter = blogIdOfSearchedDoc.filter((ele) => {
+      return ele.authorId == req.loggedUser;
+    });
+
+    if (filter.length == 0 && filter.length != blogIdOfSearchedDoc.length)
+      return res
+        .status(403)
+        .send({ status: false, msg: "not authorised to delete this doc" });
+    next();
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err });
+  }
+};
+
+module.exports = { authorisation, authentication ,authQuery};
