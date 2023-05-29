@@ -2,7 +2,8 @@ const express = require("express");
 const emailValidator = require("email-validator");
 const passwordValidator = require("password-validator");
 const mongoose = require("mongoose");
-
+const authorModel = require('../model/authorModel')
+const blogModel = require('../model/blogModel')
 // Validate the email format
 function validateEmail(email) {
   return emailValidator.validate(email);
@@ -40,7 +41,7 @@ function validateLogin(req, res, next) {
 }
 
 //======================================AUTHOR ================================================
-const validateAuthor = (req, res, next) => {
+const validateAuthor =  async (req, res, next) => {
   const { fname, lname, title, email, password } = req.body;
   const errors = [];
 
@@ -74,6 +75,9 @@ const validateAuthor = (req, res, next) => {
   if (!validateEmail(email)) {
     errors.push("Invalid email");
   }
+  const email1 = await authorModel.findOne({email:email})
+
+ if(!email1) return res.status(500).send({status:false,msg:"email already exist in database"})
 
   if (!validatePassword(password)) {
     errors.push("Minimum length of password should be 8 characters");
