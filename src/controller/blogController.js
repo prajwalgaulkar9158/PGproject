@@ -98,7 +98,9 @@ module.exports.updateBlog = updateBlog;
 // Delete a blog by its ID
 const deleteBlog = async function (req, res) {
   const blogId = req.params.blogId;
-
+  
+   if(!blogId) return res.status(500).send("blogId is required")
+   
   try {
     // Find the blog by ID and set the isDeleted and deletedAt properties
     const blog = await blogModel.findOneAndUpdate(
