@@ -1,6 +1,6 @@
 const express = require("express");
 const emailValidator = require("email-validator");
-const passwordValidator = require("password-validator");
+// const passwordValidator = require("password-validator");
 const mongoose = require("mongoose");
 const authorModel = require("../model/authorModel");
 const blogModel = require("../model/blogModel");
@@ -12,9 +12,9 @@ function validateEmail(email) {
 
 // Validate the password length
 function validatePassword(password) {
-  const schema = new passwordValidator();
-  schema.is().min(8);
-  return schema.validate(password);
+ const passwordRejex=/^.{8,}$/;
+ return passwordRejex.test(password)
+ 
 }
 
 const isValidBody = function (data) {
@@ -38,13 +38,13 @@ function validateLogin(req, res, next) {
   const isValidPassword = validatePassword(password);
 
   if (!isValidEmail) {
-    return res.status(400).json({ status: false, msg: "Invalid email" });
+    return res.status(400).send({ status: false, msg: "Invalid email" });
   }
-
+if(!password) return res.status(400).send({status:false,msg:"password required"})
   if (!isValidPassword) {
     return res
       .status(400)
-      .json({ status: false, msg: "Invalid password" });
+      .send({ status: false, msg: " password must be 8 charecter" });
   }
 
   next();
@@ -137,10 +137,10 @@ const validateBlog = async (req, res, next) => {
   if (!category) {
     errors.push("Category is mandatory");
   }
-  if (!tags) {
+  if (!tags|| tags.length==0) {
     errors.push("Tags are required");
   }
-  if (!subcategory) {
+  if (!subcategory|| subcategory.length==0) {
     errors.push("Subcategory is not present");
   }
 

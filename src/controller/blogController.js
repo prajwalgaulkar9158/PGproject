@@ -11,7 +11,7 @@ const createBlog = async function (req, res) {
     // Check if the author exists
     const validAuthor = await authorModel.findById(authorId);
     if (!validAuthor) {
-      return res.status(400).send({ status: false, msg: "Author not valid" });
+      return res.status(404).send({ status: false, msg: "Author not valid" });
     }
 
     // Create the blog
@@ -68,12 +68,14 @@ const updateBlog = async function (req, res) {
   } = req.body;
 
   try {
+    // let flag=true
+    // if(req.body.isPublished==false)return flag=false
     // Find the blog by ID and update its properties
     const updatedata = await blogModel.findOneAndUpdate(
-      { _id: blogId },
+      {$and:[{_id:blogId},{isDeleted:false}]},
       {
         publishedAt: new Date(),
-        isPublished: true,
+        isPublished: flag,
         body: newBody,
         title: newTitle,
         $push: { tags: newTags, subcategory: newSubcategory },
