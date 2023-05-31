@@ -10,15 +10,16 @@ const authentication = async function (req, res, next) {
     if (!authorHeader) {
      return  res.status(401).send({ status: false, msg: "Token is not present" });
     } else {
-      const decodedToken = await jwt.verify(
+      const decodedtoken = await jwt.verify(
         authorHeader,
         "signature of group-5",
         function (err, decodedToken) {
+          req.tokenId= decodedToken.userId
+
           if (err)
             return res
               .status(401)
               .send({ status: false, msg: "authentication failed" });
-
          return next();
         }
       );
@@ -59,27 +60,22 @@ const authorisation = async function (req, res, next) {
   }
 };
 
-const authQuery = async function (req, res, next) {
+const 
+authQuery = async function (req, res, next) {
   try {
-    const data = req.query;
-    if (Object.keys(data).length === 0) {
+    const qparam = req.query;
+    if (Object.keys(qparam).length === 0) {
       return res.status(400).send({ msg: "No query found to delete the blog" });
     }
     const blogIdOfSearchedDoc = await blogModel
-      .find(data)
-      .select({ authorId: 1, _id: 0 });
+      .find({$and:[{authorId:req.tokenId},{$or:[...Object.entries(qparam).map(([key, value]) => ({ [key]: value }))]},{isDeleted:false}]})
     if (blogIdOfSearchedDoc.length == 0)
       return res
-        .status(404)
-        .send({ status: false, msg: "no Doc found For this query" });
-    const filter = blogIdOfSearchedDoc.filter((ele) => {
-      return ele.authorId == req.loggedUser;
-    });
-
-    if (filter.length == 0 && filter.length != blogIdOfSearchedDoc.length)
-      return res
         .status(403)
-        .send({ status: false, msg: "not authorised to delete this doc" });
+        .send({ status: false, msg: "(Unauthorised) blog not found for this Author and or Query" });
+   
+
+    
     next();
   } catch (err) {
     res.status(500).send({ status: false, msg: err });

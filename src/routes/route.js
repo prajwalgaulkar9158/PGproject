@@ -23,9 +23,9 @@ router.put('/blogs/:blogId', midAuth.authentication, midAuth.authorisation, blog
 router.delete('/blogs/:blogId', midAuth.authentication, midAuth.authorisation, blogController.deleteBlog);
 
 // Delete blogs by query
-router.delete('/blogs', midAuth.authentication, midAuth.authQuery, blogController.deleteByQuery);
+router.delete('/blogs', midAuth.authentication, blogController.deleteByQuery);
 
-
+// midAuth.authQuery,
 //===========================================PHASE 2 ================================================
 // Author login
 router.post('/login', valid.validateLogin,authorController.loginAuthor);

@@ -92,7 +92,7 @@ const validateAuthor = async (req, res, next) => {
   const existingAuthor = await authorModel.findOne({ email });
   if (existingAuthor) {
     return res
-      .status(500)
+      .status(409)
       .send({ status: false, msg: "Email already exists in the database" });
   }
 
