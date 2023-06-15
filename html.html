@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>portFolio</title>
+    <link rel="stylesheet" href="css.css">
+    <script src="https://kit.fontawesome.com/a116c1fcbb.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="container">
+            <nav>
+                <img src="images/5393409.png" class="logo">
+                <ul>
+                    <li><a href="#header"><i class="fa-solid fa-house-chimney"></i>   Home</a></li>
+                    <li><a href="#about"><i class="fa-regular fa-address-card"></i>   About</a></li>
+                    <li><a href="#services"><i class="fa-sharp fa-solid fa-bookmark"></i>  Projects</a></li>
+                    <!-- <li><a href="#portfolio">portFolio</a></li> -->
+                    <li><a href="#contact"><i class="fa-solid fa-phone"></i>    </i>Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-text">
+                <p>Node.Js Web-Developer</p>
+                <h1>Hi,I'm <span>Prajwal Gaulkar </span><br> From Maharashtra</h1>
+            </div>
+        </div>
+    </div>
+<!-- ------------------about-----> 
+    <div id="about">
+        <div class="container">
+            <div class="row">
+                <div class="about-col-1">
+                    <img src="images/FB.jpg" >
+                </div>
+                <div class="about-col-2">
+                    <h1 class="sub-title">About Me</h1>
+                    <p>"Hello, I'm Prajwal Sunil Gaulkar, a passionate Node.js backend developer from Wardha, Maharashtra. With a strong foundation in web development and a focus on backend systems, I strive to create robust and scalable solution.</p>
+                    <div class="tab-titles">
+                        <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+                        <p class="tab-links"  onclick="opentab('experiance')">Experiance</p>
+                        <p class="tab-links"  onclick="opentab('education')">Education</p>
+                    </div>
+                    <div class="tab-contents active-tab" id="skills">
+                        <ul>
+                            <li><span>JavaScript</span><br> I have a strong command of core JavaScript concepts, including variables, data types, operators, control flow, and functions. I can leverage these fundamentals to write clean, efficient, and maintainable code.</li>
+                            <li><span>Node.Js</span><br>I have honed my skills in Node.js, leveraging its power to build efficient and high-performance server-side applications. I enjoy working on challenging projects that require problem-solving and attention to detail. Through my experience, I have gained expertise in designing RESTful APIs, integrating databases, and ensuring seamless data management.     </li>
+                            <li><span>Express.Js</span><br> I have extensive experience in building RESTful APIs using Express.js. I can design and develop API endpoints, implement CRUD operations, handle authentication and authorization, and ensure data integrity and security.</li>
+                            <li><span>MongoDB</span><br> I have experience integrating databases with Express.js applications. I can connect to databases like MongoDB or MySQL, execute queries, and handle data operations to ensure efficient data management and retrieval.</li>
+                            <li><span>Redis</span><br>I have experience working with Redis, an in-memory data store. I can utilize Redis to implement caching strategies, improving application performance by reducing database queries and response times.</li>
+
+
+                        </ul>
+                    </div>
+                    <div class="tab-contents" id="experiance">
+                        <ul>
+                            <li><span>Trainee At FunctionUp</span><br><br> Experienced trainee with a solid background in Node.js, MongoDB, Express.js, Redis, and AWS S3, specializing in developing RESTful APIs. Proficient in designing and implementing API endpoints, ensuring adherence to industry best practices and standards. Skilled in handling data storage and retrieval using MongoDB, integrating caching mechanisms with Redis for improved performance, and leveraging AWS S3 for efficient file storage and retrieval. Possessing excellent communication skills, I effectively collaborate with teams and stakeholders to gather requirements and deliver API solutions that meet business needs. Demonstrating leadership qualities, I have taken ownership of projects, leading the development and implementation of RESTful API architectures. With a proactive approach and a commitment to excellence, I consistently seek out innovative solutions, drive efficient API development processes, and deliver high-quality results. 🚀</li>
+
+
+                        </ul>   
+                    </div>
+                    <div class="tab-contents" id="education">
+                        <ul>
+                            <li><span>Bacholers Of Engineering (Electrical)</span><br><br>I Completed my engineering from Datta Meghe Institue Of Engineering And Research Wardha in [2022] With CGPA [8.4] </li><br>
+                            <li><span>HSC</span><br><br>From G.B.M.M Jr College Hinganghat in [2018] with [72.5%]</li><br>
+                            <li><span>SSC</span><br><br>From Mahesh Gyanpeeth Hinganghat in [2016] With [86.20%] </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- -------------------------servieces------------ -->
+
+    <div id="services">
+        <div class="container">
+            <h1 class="sub-title">My Projects</h1>
+            <div class="services-list">
+                <div>
+                    <i class="fa-solid fa-blog"></i>
+                    <h2>Bloging Site </h2><br>
+                    <p> This project is a backend of the mini-blogging site with authentication and authorization. It contains the APIs
+                        for the creation of a new Author, a New Blog, getting the blogs, updating the previous blog, and deleting the blog</p><br>
+                    <a href="https://github.com/prajwalgaulkar9158/PGproject/tree/project/blogGroup5">GitHub</a>
+                </div>
+                <div>
+                    <i class="fa-solid fa-link"></i>
+                    <h2>URL Shortner</h2><br>
+                    <p>The project is based on "URL shortener".An URL shortener is a website that reduces the length of your URL
+                        (Uniform Resource Locator). The idea is to minimize the web page address into something that’s easier to
+                        remember and track.</p><br>
+                    <a href="https://github.com/prajwalgaulkar9158/PGproject/tree/newUrlShortner">GitHub</a>
+                </div>
+                <div>
+                    <i class="fa-solid fa-school"></i>
+                    <h2>Open-To-Intern</h2><br>
+                    <p> project is a backend of an internship site where students can apply for internships in a particular college by searching for a college name.</p><br>
+                    <a href="https://github.com/prajwalgaulkar9158/PGproject/tree/open-to-intern">GitHub</a>
+                </div>
+                <div>
+                    <i class="fa-sharp fa-solid fa-bookmark"></i>
+                    <h2>Books management</h2><br>
+                    <p>The Book Management project is based on the concept of an online library where Books are managed
+                        properly. So Authenticate and authorize users can perform CRUD operations on it</p><br>
+                    <a href="github.com">GitHub</a>
+                </div>
+                <div>
+                    <i class="fa-sharp fa-solid fa-bag-shopping"></i>
+                    <h2>E-Commerce </h2><br>
+                    <p>This project is a backend of the E-Commerce site where multiple API’s written for users to perform tasks
+                        like registration, login, selecting a product, adding a product to a cart, and creating order</p><br>
+                    <a href="github.com">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- --------------contact--------- -->
+    
+    <div id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="contact-left">
+                    <h1 class="sub-title">Contact Me</h1>
+                    <p><i class="fa-regular fa-paper-plane"></i>  prajwalgaulkar78717@gmail.com</p><br>
+                    <p><i class="fa-solid fa-phone"></i>  9158506341</p>
+                    <div class="social-icon">
+                        <a href="linkedin.com/in/prajwal-gaulkar-b13540278"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/mr_prajwal_91/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://github.com/prajwalgaulkar9158"><i class="fa-brands fa-github"></i></a>
+                        <a href=""><i class="fa-brands fa-twitter"></i></a>
+                      
+
+                    </div><br><br>
+                   <button class="newbtn"><a href="images/Prajwal's Resume (1).pdf" download >Download CV</a></button> 
+                </div>
+                <div class="contact-right">
+                    <form name="submit-to-google-sheet">
+                        <input type="text" name="Name" placeholder="Your Name" required>
+                        <input type="text" name="Email" placeholder="your email" required>
+                        <textarea name="message"  rows="6" placeholder="your message"></textarea>
+                        <button type="submit" class="newbtn">Submit</button>
+                    </form>
+                    <span id="msg"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="copyright">
+            <p> copyright@ Prajwalgaulkar    <i class="fa-solid fa-heart"></i></p>
+        </div>
+    </div>
+    <script>
+        var tablinks=document.getElementsByClassName('tab-links')
+        var tabcontents=document.getElementsByClassName('tab-contents')
+        function opentab(tabname){
+            for(tablink of tablinks){
+                tablink.classList.remove("active-link")
+            }
+            for(tabcontent of tabcontents){
+                tabcontent.classList.remove("active-tab")
+            }
+            event.currentTarget.classList.add("active-link")
+            document.getElementById(tabname).classList.add('active-tab')
+        }
+
+    </script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw05LgrQnDlst9XDZZZRiUD97cUUgKdFFHGsRuEgvIvya-nGdlsTu2tgFTVEIPQrqG-/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const msg= document.getElementById('msg')
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault()
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                msg.innerHTML="Message sent successfully"
+                setTimeout(function(){
+                    msg.innerHTML=""
+                },3000)
+                form.reset()
+            })
+            .catch(error => console.error('Error!', error.message))
+        })
+      </script>
+</body>
+</html>
